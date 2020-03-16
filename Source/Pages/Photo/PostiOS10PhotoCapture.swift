@@ -48,6 +48,7 @@ class PostiOS10PhotoCapture: NSObject, YPPhotoCapture, AVCapturePhotoCaptureDele
         // Set flash mode.
         if let deviceInput = deviceInput {
             if deviceInput.device.isFlashAvailable {
+                #if !targetEnvironment(macCatalyst)
                 switch currentFlashMode {
                 case .auto:
                     if photoOutput.supportedFlashModes.contains(.auto) {
@@ -62,6 +63,7 @@ class PostiOS10PhotoCapture: NSObject, YPPhotoCapture, AVCapturePhotoCaptureDele
                         settings.flashMode = .on
                     }
                 }
+                #endif
             }
         }
         return settings
@@ -106,6 +108,7 @@ class PostiOS10PhotoCapture: NSObject, YPPhotoCapture, AVCapturePhotoCaptureDele
         block?(data)
     }
         
+    #if !targetEnvironment(macCatalyst)
     func photoOutput(_ output: AVCapturePhotoOutput,
                      didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?,
                      previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
@@ -119,4 +122,5 @@ class PostiOS10PhotoCapture: NSObject, YPPhotoCapture, AVCapturePhotoCaptureDele
             block?(data)
         }
     }
+    #endif
 }
